@@ -1,0 +1,13 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Explicitly declare text files we want to always be normalized and converted
+# to native line endings on checkout.
+*.js text
+*.json text
+*.scss text
+*.css text
+*.html text
+*.md text
+*.txt text
+*.xml text
