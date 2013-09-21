@@ -1,35 +1,21 @@
-var Crawler = require("simplecrawler"),
-    program = require('commander'),
+#!/usr/bin/env node
+
+var program = require('commander'),
     packageJson = require('./package.json'),
-    fetchCondition = /\.pdf|\.js|\.css|\.ico|\.svg|\.png|\.jpg|\.gif$/i,
-    crawler;
+    gretel;
 
 program._name = packageJson.name;
 program
     .version(packageJson.version)
-    .option('-s, --start [uri]', 'Uri to start crawling from')
+    .option('-s, --startUri [uri]', 'Uri to start crawling from')
+    .option('-q, --queuePath [filePath]', 'File path to load / save queue from')
     .parse(process.argv);
 
-crawler = new Crawler(program.start);
-
-console.log( "Loading previous breadcrumbs..." );
-crawler.queue.defrost("breadcrumbs.json");
-
-crawler.filterByDomain = false;
-
-crawler.addFetchCondition(function(parsedURL) {
-    return !parsedURL.path.match(fetchCondition);
-});
-
-crawler.on("fetchcomplete",function(queueItem, data, response, callback) {
-    console.log(queueItem.url);
-});
-
-crawler.start();
+gretel = require('./gretel')(program.startUri);
 
 process.on( 'SIGINT', function() {
     console.log( "Saving breadcrumbs for later..." );
-    crawler.queue.freeze("breadcrumbs.json", function(error){
+    gretel.queue.freeze("breadcrumbs.json", function(error){
         if(error){
             console.log(error.stack || error);
             process.exit(1);
@@ -38,4 +24,20 @@ process.on( 'SIGINT', function() {
     });
 });
 
+gretel.on('fetchcomplete', function(queueItem, data, response, callback) {
+    console.log(queueItem.url);
+    callback();
+});
 
+gretel.on('complete ', function() {
+    console.log( "All breadcrumbs have been followed..." );
+    process.exit(0);
+});
+
+gretel.load(program.queuePath, function(error){
+    if(error){
+        return console.log(error.stack || error);
+    }
+
+    gretel.start();
+});
