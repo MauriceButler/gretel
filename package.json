@@ -1,6 +1,6 @@
 {
   "name": "gretel",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Follows and collects breadcrumbs accross the web",
   "main": "index.js",
   "scripts": {
