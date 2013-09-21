@@ -1,8 +1,17 @@
 var Crawler = require("simplecrawler"),
-    crawler = new Crawler("www.example.com"),
-    fetchCondition = /\.pdf|\.js|\.css|\.ico|\.svg|\.png|\.jpg|\.gif$/i;
+    program = require('commander'),
+    packageJson = require('./package.json'),
+    fetchCondition = /\.pdf|\.js|\.css|\.ico|\.svg|\.png|\.jpg|\.gif$/i,
+    crawler;
 
-// Defrost queue
+program._name = packageJson.name;
+program
+    .version(packageJson.version)
+    .option('-s, --start [uri]', 'Uri to start crawling from')
+    .parse(process.argv);
+
+crawler = new Crawler(program.start);
+
 console.log( "Loading previous breadcrumbs..." );
 crawler.queue.defrost("breadcrumbs.json");
 
@@ -14,16 +23,19 @@ crawler.addFetchCondition(function(parsedURL) {
 
 crawler.on("fetchcomplete",function(queueItem, data, response, callback) {
     console.log(queueItem.url);
-    // console.log(queueItem.host);
 });
 
 crawler.start();
 
 process.on( 'SIGINT', function() {
     console.log( "Saving breadcrumbs for later..." );
-    // // Freeze queue
-    crawler.queue.freeze("breadcrumbs.json");
-    process.exit();
+    crawler.queue.freeze("breadcrumbs.json", function(error){
+        if(error){
+            console.log(error.stack || error);
+            process.exit(1);
+        }
+        process.exit(0);
+    });
 });
 
 

@@ -28,5 +28,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/MauriceButler/gretel/issues"
+  },
+  "preferGlobal": "true",
+  "bin": {
+    "gretel": "index.js"
   }
 }
