@@ -1,10 +1,28 @@
-module.exports = function(startUri){
+module.exports = function(startUris){
 
     var Crawler = require('simplecrawler'),
-    fs = require('fs'),
-        fetchCondition = /\.pdf|\.js|\.css|\.ico|\.svg|\.png|\.jpg|\.gif$/i,
+        util = require('util'),
+        url = require('url'),
+        fs = require('fs'),
+        fetchCondition = /\.pdf|\.js|\.css|\.ico|\.svg|\.png|\.jpg|\.jpeg|\.gif|\.csv$/i,
         defaultBreadcrumbFile = './breadcrumbs.json',
-        gretel = new Crawler(startUri);
+        gretel;
+
+    function genericCallback(error){
+        if(error){
+            console.log(error.stack || error);
+        }
+    }
+
+    if(!startUris || typeof startUris === 'string'){
+        startUris = [startUris];
+    }
+    gretel = new Crawler();
+
+    for (var i = 0; i < startUris.length; i++) {
+        var newUrl = url.parse(startUris[i]);
+        gretel.queue.add(newUrl.protocol, newUrl.host || newUrl.path, newUrl.port || 80, newUrl.host ? newUrl.path : '/', genericCallback);
+    }
 
     gretel.filterByDomain = false;
     gretel.ignoreWWWDomain = true;
