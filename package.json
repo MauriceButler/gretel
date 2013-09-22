@@ -4,7 +4,7 @@
   "description": "Follows and collects breadcrumbs accross the web",
   "main": "gretel.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node tests/tests.js"
   },
   "repository": {
     "type": "git",
@@ -20,10 +20,12 @@
     "breadcrumbs",
     "hansel"
   ],
+  "devDependencies" : {
+    "tape" : "1.1.x"
+  },
   "dependencies": {
     "commander": "2.0.x",
-    "simplecrawler": "0.2.x",
-    "through": "2.3.x"
+    "simplecrawler": "0.2.x"
   },
   "author": "Maurice Butler <maurice.butler@gmail.com>",
   "license": "MIT",
