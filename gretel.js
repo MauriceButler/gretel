@@ -20,14 +20,18 @@ module.exports = function(startUris){
     gretel = new Crawler();
 
     for (var i = 0; i < startUris.length; i++) {
-        var newUrl = url.parse(startUris[i]);
-        gretel.queue.add(newUrl.protocol, newUrl.host || newUrl.path, newUrl.port || 80, newUrl.host ? newUrl.path : '/', genericCallback);
+        if(startUris[i]){
+            var newUrl = url.parse(startUris[i]);
+            gretel.queue.add(newUrl.protocol, newUrl.host || newUrl.path, newUrl.port || 80, newUrl.host ? newUrl.path : '/', genericCallback);
+        }
     }
 
     gretel.filterByDomain = false;
     gretel.ignoreWWWDomain = true;
     gretel.stripQuerystring = true;
     gretel.timeout = 5000;
+    gretel.downloadUnsupported = false;
+    gretel.acceptCookies = false;
 
     gretel.addFetchCondition(function(parsedURL) {
         return !parsedURL.path.match(fetchCondition);
