@@ -22,8 +22,7 @@ if(!program.queuePath){
 }
 
 process.on( 'SIGINT', function() {
-    console.log( 'Saving breadcrumbs for later...' );
-    gretel.queue.freeze(program.queuePath, function(error){
+    gretel.save(program.queuePath, function(error){
         if(error){
             console.log(error.stack || error);
             process.exit(1);
