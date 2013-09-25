@@ -1,6 +1,6 @@
 {
   "name": "gretel",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Follows and collects breadcrumbs accross the web",
   "main": "gretel.js",
   "scripts": {
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "commander": "2.0.x",
-    "simplecrawler": "0.2.x"
+    "simplecrawler": "0.3.x"
   },
   "author": "Maurice Butler <maurice.butler@gmail.com>",
   "license": "MIT",

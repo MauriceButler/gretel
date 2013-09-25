@@ -44,7 +44,16 @@ Optionally load / save breadcrumb queue state
 Other settings on gretel are the same as node-simplecrawler (she is actually an instance of Crawler)
 for more info and examples see the [readme for node-simplecrawler](https://github.com/cgiffard/node-simplecrawler)
 
-    gretel.on('fetchcomplete', function(queueItem, data, response, callback) {
+    // sync processing
+    gretel.on('fetchcomplete', function(queueItem, data, response) {
         console.log(queueItem.url);
-        callback();
+    });
+
+    // async processing
+    gretel.on("fetchcomplete", function(queueItem, data, response) {
+        var continue = this.wait();
+        doSomethingAsync(data, function(){
+            console.log(queueItem.url);
+            continue();
+        });
     });
