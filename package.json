@@ -21,8 +21,8 @@
     "breadcrumbs",
     "hansel"
   ],
-  "devDependencies" : {
-    "tape" : "1.1.x"
+  "devDependencies": {
+    "tape": "1.1.x"
   },
   "dependencies": {
     "commander": "2.0.x",
@@ -35,5 +35,9 @@
   },
   "bin": {
     "gretel": "./index.js"
+  },
+  "homepage": "https://github.com/MauriceButler/gretel#readme",
+  "directories": {
+    "test": "tests"
   }
 }
